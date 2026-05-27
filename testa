@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 履歷網站模板</title>
+  <style>
+    /* =====================================================
+       AI 履歷網站教學模板 v2
+       特色：
+       1. 學生主要只需要修改 resumeData
+       2. 版型與一般作品集不同，偏「履歷資料卡 + 時間軸」
+       3. 適合放到 GitHub Pages
+       ===================================================== */
+
+    :root {
+      --bg: #fff7ed;
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --brand: #ea580c;
+      --brand-soft: #ffedd5;
+      --green: #166534;
+      --green-soft: #dcfce7;
+      --border: #fed7aa;
+      --shadow: 0 16px 40px rgba(124, 45, 18, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #fed7aa 0, transparent 300px),
+        linear-gradient(180deg, #fff7ed 0%, #ffffff 55%, #fff7ed 100%);
+      color: var(--ink);
+      line-height: 1.75;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      padding: 22px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .site-name {
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav a {
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+
+    .nav a:hover {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 26px;
+      align-items: stretch;
+      padding: 28px 0 56px;
+    }
+
+    .identity-card,
+    .intro-card {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .identity-card {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 430px;
+    }
+
+    .avatar {
+      width: 86px;
+      height: 86px;
+      border-radius: 28px;
+      background: var(--brand);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 22px;
+    }
+
+    .label {
+      display: inline-flex;
+      width: fit-content;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.98;
+      margin: 0 0 16px;
+      letter-spacing: -0.06em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .quick-info {
+      display: grid;
+      gap: 10px;
+      margin-top: 26px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .quick-info span {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: #fff7ed;
+      border: 1px solid var(--border);
+    }
+
+    .intro-card {
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-card h2 {
+      margin: 0 0 14px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    .intro-card p {
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      padding: 12px 18px;
+      border-radius: 16px;
+      font-weight: 800;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .button.primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: white;
+    }
+
+    section {
+      padding: 46px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      margin: 0;
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid.two { grid-template-columns: repeat(2, 1fr); }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(124, 45, 18, 0.06);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .card p { margin: 0; color: var(--muted); }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 18px;
+    }
+
+    .project-no {
+      width: 72px;
+      height: 72px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .meta {
+      color: var(--brand);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .result {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 16px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .time {
+      color: var(--brand);
+      font-weight: 900;
+      font-size: 14px;
+      padding-top: 4px;
+    }
+
+    .contact-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+      background: var(--ink);
+      color: white;
+      border-radius: 30px;
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    .contact-box p { color: #d1d5db; margin: 0; }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .contact-links a {
+      background: rgba(255,255,255,0.12);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    footer {
+      color: var(--muted);
+      text-align: center;
+      padding: 28px 0 46px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 820px) {
+      .topbar,
+      .section-head,
+      .contact-box {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .grid.two,
+      .grid.three,
+      .contact-box {
+        grid-template-columns: 1fr;
+      }
+
+      .project,
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+
+      .identity-card { min-height: auto; }
+      .contact-links { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="site-name" href="#" id="siteName">我的履歷網站</a>
+      <nav class="nav">
+        <a href="#about">關於我</a>
+        <a href="#skills">技能</a>
+        <a href="#projects">作品</a>
+        <a href="#experience">經歷</a>
+        <a href="#contact">聯絡</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="identity-card">
+          <div>
+            <div class="avatar" id="avatarText">王</div>
+            <div class="label" id="profileBadge">學生｜AI 學習者</div>
+            <h1 id="profileName">王小明</h1>
+            <p class="subtitle" id="profileTitle">想把 AI 工具用在學習與作品集製作的學生</p>
+          </div>
+          <div class="quick-info" id="quickInfo"></div>
+        </div>
+
+        <div class="intro-card">
+          <h2 id="introHeadline">這是一個用 AI 協助完成的個人履歷網站</h2>
+          <p id="introText">把自己的履歷內容交給 AI 整理，再放進這份模板，就能快速完成一個可以公開分享的個人網站。</p>
+          <div class="actions">
+            <a class="button primary" href="#projects">查看我的作品</a>
+            <a class="button" id="mailButton" href="mailto:example@gmail.com">寄信給我</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-head">
+          <h2>關於我</h2>
+          <p>用 2 到 4 張小卡片介紹你的背景、特色、學習目標與未來方向。</p>
+        </div>
+        <div class="grid two" id="aboutGrid"></div>
+      </section>
+
+      <section id="skills">
+        <div class="section-head">
+          <h2>技能工具箱</h2>
+          <p>不一定要寫程式技能，也可以放簡報、企劃、語言、設計、AI 工具。</p>
+        </div>
+        <div class="grid three" id="skillsGrid"></div>
+      </section>
+
+      <section id="projects">
+        <div class="section-head">
+          <h2>作品與成果</h2>
+          <p>建議放 2 到 4 個作品。每個作品要寫清楚你做了什麼、用了什麼工具、產出什麼成果。</p>
+        </div>
+        <div class="grid" id="projectsGrid"></div>
+      </section>
+
+      <section id="experience">
+        <div class="section-head">
+          <h2>經歷時間軸</h2>
+          <p>可以放課程專案、社團、競賽、實習、工讀或志工經驗。</p>
+        </div>
+        <div class="timeline" id="experienceTimeline"></div>
+      </section>
+
+      <section id="contact">
+        <div class="contact-box">
+          <div>
+            <h2 style="margin:0 0 8px;">聯絡我</h2>
+            <p id="contactNote">歡迎透過 Email、GitHub 或 LinkedIn 聯絡我。</p>
+          </div>
+          <div class="contact-links" id="contactLinks"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footerText">© 2026 我的履歷網站</footer>
+  </div>
+
+  <script>
+    /* =====================================================
+       學生主要修改區：resumeData
+       ===================================================== */
+
+    const resumeData = {
+      profile: {
+        name: "林宇哲",
+        avatar: "林",
+        badge: "AI 應用企劃｜數位內容設計｜資料分析",
+        title: "國立海洋大學 資訊傳播學系",
+        headline: "探索生成式 AI 與數位內容的無限可能",
+        intro: "我是林宇哲，目前就讀於國立海洋大學資訊傳播學系。對生成式 AI、內容設計與資料分析有高度興趣。平時喜歡研究 AI 工具如何協助學習與創作，也積極參與校內競賽與社群經營，期望未來朝向 AI 應用企劃、數位產品或資料分析方向發展。",
+        quickInfo: ["國立海洋大學 資訊傳播學系", "現居城市：台北市", "目標：AI 應用企劃 / 數位產品管理"]
+      },
+
+      about: [
+        {
+          title: "專業背景",
+          content: "就讀資訊傳播學系，具備跨領域的數位傳播思維，擅長結合技術工具與內容創作，將資訊轉化為有感內容。"
+        },
+        {
+          title: "AI 工具實踐",
+          content: "熱衷於探索 ChatGPT、Gemini 等生成式 AI 工具，並實際應用於報告優化、網站內容整理與工作效率提升。"
+        },
+        {
+          title: "核心優勢",
+          content: "具備良好的簡報溝展與社群企劃能力，能將數據分析結果導入活動推廣，協助團隊達成具體成效。"
+        },
+        {
+          title: "未來願景",
+          content: "希望持續深化 AI 應用與數位產品規劃能力，用創新科技與設計思考解決實務問題。"
+        }
+      ],
+
+      skills: [
+        {
+          category: "AI 應用工具",
+          items: ["ChatGPT", "Gemini", "Canva AI", "Notion AI"]
+        },
+        {
+          category: "內容與設計",
+          items: ["Canva", "Figma", "PowerPoint", "社群貼文設計"]
+        },
+        {
+          category: "基礎技術與工具",
+          items: ["HTML / CSS", "GitHub Pages", "Google Sheets"]
+        }
+      ],
+
+      projects: [
+        {
+          title: "AI 履歷網站製作",
+          role: "個人專案",
+          description: "利用生成式 AI 協助整理、潤飾履歷內容，並透過修改 HTML 模板與程式碼架構，完成一頁式個人靜態網站。",
+          tools: ["ChatGPT", "HTML", "GitHub Pages"],
+          result: "成功建立並部署可公開分享的個人履歷網站。"
+        },
+        {
+          title: "校園活動宣傳企劃",
+          role: "行銷課程小組專案",
+          description: "負責活動的社群貼文視覺設計與整體宣傳策略規劃，運用數位工具追蹤報名狀況，有效提升活動曝光度。",
+          tools: ["Canva", "Instagram", "Google Forms"],
+          result: "成功協助提升活動曝光，活動報名人數顯著成長約 40%。"
+        },
+        {
+          title: "AI 學習助手研究",
+          role: "課堂研究專題",
+          description: "專注研究生成式 AI 對大專院校學生學習效率的影響，設計問卷並分析學生的工具使用行為與潛在需求。",
+          tools: ["Gemini", "Excel", "問卷數據分析"],
+          result: "完成高質量課堂研究報告，並於期末成果發表會中展出。"
+        }
+      ],
+
+      experience: [
+        {
+          period: "2025",
+          title: "校內簡報競賽",
+          content: "精進簡報邏輯架構與口頭表達技巧，榮獲校內簡報競賽「佳作」肯定。"
+        },
+        {
+          period: "2025",
+          title: "AI 與數位工具工作坊",
+          content: "參與專業工作坊，深化對生成式 AI 技術、自動化流程與數位工具整合的實務理解。"
+        },
+        {
+          period: "2024",
+          title: "系學會 美宣組",
+          content: "負責系所活動的視覺宣傳物設計與社群貼文製作，培養團隊協作與跨部門溝通能力。"
+        }
+      ],
+
+      contact: {
+        email: "yjlin.student@gmail.com",
+        github: "https://github.com/yjlin-demo",
+        linkedin: "#", // 若未來有 LinkedIn 可以填入此處
+        note: "如果您對我的經歷感興趣，或有 AI 應用、數位內容相關的合作機會，歡迎隨時透過以下方式聯絡我！"
+      }
+    };
+
+    /* =====================================================
+       網站產生區：通常不用修改
+       ===================================================== */
+
+    document.title = `${resumeData.profile.name}｜AI 履歷網站`;
+    document.getElementById("siteName").textContent = `${resumeData.profile.name}｜Resume`;
+    document.getElementById("avatarText").textContent = resumeData.profile.avatar;
+    document.getElementById("profileBadge").textContent = resumeData.profile.badge;
+    document.getElementById("profileName").textContent = resumeData.profile.name;
+    document.getElementById("profileTitle").textContent = resumeData.profile.title;
+    document.getElementById("introHeadline").textContent = resumeData.profile.headline;
+    document.getElementById("introText").textContent = resumeData.profile.intro;
+    document.getElementById("mailButton").href = `mailto:${resumeData.contact.email}`;
+    document.getElementById("contactNote").textContent = resumeData.contact.note;
+    document.getElementById("footerText").textContent = `© 2026 ${resumeData.profile.name}｜AI 履歷網站`;
+
+    const quickInfo = document.getElementById("quickInfo");
+    resumeData.profile.quickInfo.forEach(info => {
+      quickInfo.innerHTML += `<span>${info}</span>`;
+    });
+
+    const aboutGrid = document.getElementById("aboutGrid");
+    resumeData.about.forEach(item => {
+      aboutGrid.innerHTML += `
+        <article class="card">
+          <h3>${item.title}</h3>
+          <p>${item.content}</p>
+        </article>
+      `;
+    });
+
+    const skillsGrid = document.getElementById("skillsGrid");
+    resumeData.skills.forEach(group => {
+      skillsGrid.innerHTML += `
+        <article class="card">
+          <h3>${group.category}</h3>
+          <div class="chips">
+            ${group.items.map(item => `<span class="chip">${item}</span>`).join("")}
+          </div>
+        </article>
+      `;
+    });
+
+    const projectsGrid = document.getElementById("projectsGrid");
+    resumeData.projects.forEach((project, index) => {
+      const no = String(index + 1).padStart(2, "0");
+      projectsGrid.innerHTML += `
+        <article class="card project">
+          <div class="project-no">${no}</div>
+          <div>
+            <div class="meta">${project.role}</div>
+            <h3>${project.title}</h3>
+            <p>${project.description}</p>
+            <div class="chips">
+              ${project.tools.map(tool => `<span class="chip">${tool}</span>`).join("")}
+            </div>
+            <div class="result">成果：${project.result}</div>
+          </div>
+        </article>
+      `;
+    });
+
+    const experienceTimeline = document.getElementById("experienceTimeline");
+    resumeData.experience.forEach(exp => {
+      experienceTimeline.innerHTML += `
+        <article class="timeline-item">
+          <div class="time">${exp.period}</div>
+          <div class="card">
+            <h3>${exp.title}</h3>
+            <p>${exp.content}</p>
+          </div>
+        </article>
+      `;
+    });
+
+    const contactLinks = document.getElementById("contactLinks");
+    contactLinks.innerHTML = `
+      <a href="mailto:${resumeData.contact.email}">Email</a>
+      <a href="${resumeData.contact.github}" target="_blank">GitHub</a>
+    `;
+  </script>
+</body>
+</html>
